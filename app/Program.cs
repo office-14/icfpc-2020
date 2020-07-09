@@ -15,7 +15,6 @@ namespace app
 
             using var httpClient = new HttpClient { BaseAddress = serverUrl };
             using var responseMessage = await httpClient.GetAsync($"?playerKey={playerKey}");
-
             responseMessage.EnsureSuccessStatusCode();
         }
     }
