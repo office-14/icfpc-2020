@@ -13,7 +13,7 @@ namespace app
 
             Console.WriteLine($"ServerUrl: {serverUrl}; PlayerKey: {playerKey}");
 
-            using var httpClient = new HttpClient {BaseAddress = serverUrl};
+            using var httpClient = new HttpClient { BaseAddress = serverUrl };
             using var responseMessage = await httpClient.GetAsync($"?playerKey={playerKey}");
             responseMessage.EnsureSuccessStatusCode();
         }
