@@ -11,6 +11,10 @@ THREADS = 80
 
 def send_alien(req)
 	RestClient.post(URL, req)
+rescue
+	pp["got error", $!]
+	sleep 60
+	retry
 end
 
 OUTPUT = File.open(OUTPUT_FILE, "a")
