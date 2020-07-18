@@ -7,6 +7,6 @@ describe "simple" do
 	}
 
 	it "first" do
-		expect(subject.eval('ap inc 5')).to eq 6
+		expect(subject.eval('ap ap add 3 5')).to eq 8
 	end
 end
