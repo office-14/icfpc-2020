@@ -6,8 +6,8 @@ describe "simple" do
     ICFPC::Evaluator.new
   }
 
-  it "simple add" do
-    expect(subject.eval('ap ap add 3 5')).to eq 8
+  it "simple add", :focus => true do
+    expect(subject.execute('ap ap add 3 5')).to eq 8
   end
 
   it "inc" do
@@ -15,6 +15,6 @@ describe "simple" do
       inc = ap add 3
       ap inc 7
     """
-    expect(subject.eval(code)).to eq 8
+    expect(subject.execute(code)).to eq 8
   end
 end
