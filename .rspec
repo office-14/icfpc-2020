@@ -1,0 +1,3 @@
+-I app/lib
+--color
+--require spec_helper
