@@ -47,16 +47,14 @@ module ICFPC
           if cur_node.nil?
             cur_node = new_node
           elsif token_type == :operator
-            add_as_children(cur_node, new_node)
+            add_as_child(cur_node, new_node)
             cur_node = new_node
           else
-            add_as_children(cur_node, new_node)
-            unless cur_node.right.nil?
+            add_as_child(cur_node, new_node)
+            if cur_node.parent && !cur_node.right.nil?
               cur_node = cur_node.parent   
             end
           end
-
-          pp [new_node, cur_node]
         rescue
           raise "Wrong expression at token ##{index + 1} tokens #{tokens.inspect} at line #{line_num}. Error: #{$!.inspect}"
         end
@@ -65,11 +63,11 @@ module ICFPC
       get_tree_parent(cur_node)
     end
 
-    def add_as_children(parent_node, new_node)
-      if cur_node.left.nil?
-        cur_node.left = new_node
-      elsif cur_node.right.nil?
-        cur_node.right = new_node
+    def add_as_child(parent_node, new_node)
+      if parent_node.left.nil?
+        parent_node.left = new_node
+      elsif parent_node.right.nil?
+        parent_node.right = new_node
       else
         raise "Can't add child"
       end
