@@ -2,7 +2,7 @@ require 'set'
 
 module ICFPC
 	module Functions
-		FUNCTION_NAMES = Set["add", "negate", "mod", "dem"]
+		FUNCTION_NAMES = Set["add", "negate", "mod", "dem", "lt", "inc", "dec", "mul", "div", "eq", "pwr2"]
 
 		class << self
 			def add x1, x2
@@ -54,6 +54,34 @@ module ICFPC
 					num_abs = 0 - num_abs
 				end
 				num_abs
+			end
+
+			def lt x1, x2
+				x1 < x2
+			end
+
+			def inc x1
+				x1++
+			end
+
+			def dec x1
+				x1--
+			end
+
+			def mul x1, x2
+				x1 * x2
+			end
+
+			def div x1, x2
+				x1 / x2
+			end
+
+			def eq x1, x2
+				x1 == x2
+			end
+
+			def pwr2 x1
+				2 ** x1
 			end
 		end
 	end
