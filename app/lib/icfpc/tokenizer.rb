@@ -13,7 +13,7 @@ module ICFPC
           [:function, token.to_sym]
         elsif token == 'nil'
           [:primitive, nil]
-        elsif token =~ /^\d+$/
+        elsif token =~ /^\-?\d+$/
           [:primitive, Integer(token)]
         else
           [:pure_function, token]
