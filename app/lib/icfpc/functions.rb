@@ -2,7 +2,7 @@ require 'set'
 
 module ICFPC
 	module Functions
-		FUNCTION_NAMES = Set["add", "negate"]
+		FUNCTION_NAMES = Set["add", "negate", "mod", "dem"]
 
 		class << self
 			def add x1, x2
