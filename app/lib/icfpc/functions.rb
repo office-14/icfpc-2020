@@ -105,7 +105,7 @@ module ICFPC
 				res
 			end
 
-			def dem num_as_bit_string
+			def dem(num_as_bit_string)
 				res, rest = dem_next(num_as_bit_string)
 				raise "can't demodulate rest #{rest}" if rest.size > 0
 				
