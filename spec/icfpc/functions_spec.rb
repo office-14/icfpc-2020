@@ -116,12 +116,21 @@ describe ICFPC::Functions do
       expect(subject.dem("1100")).to eq []
     end
 
+    it "(())" do
+      expect(subject.dem("11110000")).to eq [[]]
+    end
+
+
     it "(nil)" do
       expect(subject.dem("110000")).to eq [nil]
     end
 
     it "(nil, nil)" do
       expect(subject.dem("1100110000")).to eq [nil, nil]
+    end
+
+    it "((nil), ())" do
+      expect(subject.dem("1111000011110000")).to eq [[nil], []]
     end
 
     it "(1,2)" do
@@ -138,10 +147,22 @@ describe ICFPC::Functions do
       expect(subject.dem("0111000011010")).to eq 26
     end
 
-    it "[nil, -4, -5]" do
+    it "(nil, -4, -5)" do
       expect(subject.dem(
         "11001110100100111010010100"
       )).to match_array [nil, -4, -5]
+    end
+
+    it "((nil), nil)" do
+      expect(subject.dem(
+        "11110000110000"
+      )).to eq [[nil],nil]
+    end
+
+    it "((), nil)" do
+      expect(subject.dem(
+        "111100110000"
+      )).to eq [[], nil]
     end
   end
 
@@ -155,8 +176,8 @@ describe ICFPC::Functions do
 
     it "arrays" do
       1_000.times do
-        arr = rand_array
-        expect(subject.dem(subject.mod(arr))).to match_array(arr)
+        arr = rand_array(nil, 3, 3, 2)
+        expect(subject.dem(subject.mod(arr))).to eq(arr)
       end
     end
   end
@@ -169,6 +190,11 @@ describe ICFPC::Functions do
     it "[nil] at end list" do
       expect(subject.dem(subject.mod([-1, nil, [nil]]))).to match_array([-1, nil, [nil]])
     end
+
+    it "[nil, [nil, nil], [[], nil]]" do
+      expr = [nil, [nil, nil], [[], nil]]
+      expect(subject.dem(subject.mod(expr))).to eq expr
+    end
   end
 
   def rand_bignum(max = 1_000_000_000_000_000_000)
@@ -177,7 +203,7 @@ describe ICFPC::Functions do
 
   def rand_array(depth = nil, max_size = 10, max_depth = 3, max_num = 1_000_000_000_000_000_000)
     res = []
-    size = rand(1..max_size)
+    size = rand(0..max_size)
     cur_depth = depth || rand(0..max_depth)
 
     variants = if cur_depth == 0
@@ -194,7 +220,7 @@ describe ICFPC::Functions do
         res.push(rand_bignum(max_num))
       when :arr
         if cur_depth > 0
-          res.push(rand_array(cur_depth - 1))
+          res.push(rand_array(cur_depth - 1, max_size, max_depth, max_num))
         else
 
         end
