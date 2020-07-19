@@ -76,11 +76,11 @@ def main
     answer = send serverurl, post_paramenters, playerkey
     gr = GameResponse.new(answer)
 
-    move_vectors = [[1, 1], [4, 4]].cycle
+    move_vectors = [[1, 1], [4, 4]]
 
     step = 1
     while (gr.success && gr.game_stage == :started)
-      post_paramenters = [4, playerkey.to_i, [0, gr.static_game_info.role, move_vectors[step]]]
+      post_paramenters = [4, playerkey.to_i, [0, gr.static_game_info.role, move_vectors.sample]]
       answer = send serverurl, post_paramenters, playerkey
       gr = GameResponse.new(answer)
       sleep 0.5
