@@ -36,7 +36,7 @@ def main
     send serverurl, post_paramenters, playerkey, '/aliens/send'
 
     while true do
-      post_paramenters = [2, 1, [rand(0..255), rand(0..255), rand(0..255)], 1]
+      post_paramenters = [4, playerkey.to_i, [2, 1, [rand(0..255), rand(0..255), rand(0..255)], 1]] 
       send serverurl, post_paramenters, playerkey, '/aliens/send'
     end
 
