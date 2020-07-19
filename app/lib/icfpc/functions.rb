@@ -106,10 +106,59 @@ module ICFPC
 			end
 
 			def dem num_as_bit_string
-				res, rest = dem_next(num_as_bit_string)
-				raise "can't demodulate rest #{rest}" if rest.size > 0
-				
-				res
+				if num_as_bit_string == '00'
+					return nil
+				end
+				if num_as_bit_string[0..1] != '11'
+					elem, rest =  dem_number num_as_bit_string
+					return elem
+				end
+				arr_str = '['
+				current_index = 2
+				prev_value = '['
+				while current_index < num_as_bit_string.length
+					current_two_chars = num_as_bit_string[current_index..current_index+1]
+					if current_two_chars == '11'
+						if prev_value == 'number' || prev_value == ']'
+							current_value = ','
+							arr_str += ','
+						else
+							current_value = '['
+							arr_str += '['
+						end
+						current_index += 2
+					elsif current_two_chars == '10' || current_two_chars == '01'
+						elem, rest = dem_number num_as_bit_string[current_index..]
+						arr_str += elem.to_s
+						current_value = 'number'
+						current_index += num_as_bit_string[current_index..].length - rest.length
+					else
+						if prev_value == 'number' || prev_value == 'nil' || prev_value == ']'
+							arr_str += ']'
+							current_value = ']'
+						elsif prev_value == ','
+							arr_str += 'nil'
+							current_value = 'nil'
+						else
+							# if current_index + 1 == num_as_bit_string.length - 1
+							# 	arr_str += ']'
+							# 	current_value = ']'
+							# elsif num_as_bit_string[current_index + 2..current_index + 3] == '10' || num_as_bit_string[current_index + 2..current_index + 3] == '01'
+							# 	arr_str += ']'
+							# 	current_value = ']'
+							# elsif num_as_bit_string[current_index + 2..current_index + 3] == '11'
+							# 	arr_str += 'nil'
+							# 	current_value = 'nil'
+							# end
+							arr_str += 'nil'
+							current_value = 'nil'
+						end
+						current_index += 2
+					end
+
+					prev_value = current_value
+				end
+				return eval(arr_str)
 			end
 
 			def send_to_alien(msg, debug = true)
