@@ -76,7 +76,7 @@ def main
     answer = send serverurl, post_paramenters, playerkey
     gr = GameResponse.new(answer)
 
-    move_vectors = [[1, 1], [4, 4]]
+    move_vectors = [[1, 1, nil], [4, 4, nil]]
 
     step = 1
     while (gr.success && gr.game_stage == :started)
