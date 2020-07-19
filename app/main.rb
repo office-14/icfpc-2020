@@ -31,7 +31,7 @@ def main
     playerkey = ARGV[1]
     post_paramenters = [2, playerkey.to_i, [1]]
     answer = send serverurl, post_paramenters, playerkey, '/aliens/send'
-    if answer != false
+    if answer != false 
       a = answer[2][0]
       b = answer[2][1]
       c = answer[2][2][0]
@@ -39,12 +39,14 @@ def main
       e = answer[2][2][2]
       f = answer[2][3][0]
       g = answer[2][3][1]
+      h = 0
+      i = 1
       permutations = []
-      [a,b,c,d,e,f].permutation.to_a.each do |perm|
+      [a,b,c,d,e,f,g,h,i].permutation.to_a.each do |perm|
         permutations.push perm[0..3]
       end
       permutations = permutations.uniq
-
+      permutations.push [1,1,1,1]
       permutations.each do |_perm|
         post_paramenters = [3, playerkey.to_i, _perm]
         answer = send serverurl, post_paramenters, playerkey, '/aliens/send'
