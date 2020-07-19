@@ -27,7 +27,23 @@ def main
   begin
     serverurl = ARGV[0]
     playerkey = ARGV[1]
-    post_paramenters = [2, playerkey.to_i, nil]
+    post_paramenters = [2, playerkey.to_i, [1]]
+    answer = send serverurl, post_paramenters, playerkey, '/aliens/send'
+    if answer != false
+      if answer.count == 4
+        post_paramenters = [3, playerkey.to_i, answer]
+        answer = send serverurl, post_paramenters, playerkey, '/aliens/send'
+      end
+    end
+    post_paramenters = [2, playerkey.to_i, [2]]
+    answer = send serverurl, post_paramenters, playerkey, '/aliens/send'
+    if answer != false
+      if answer.count == 4
+        post_paramenters = [3, playerkey.to_i, answer]
+        answer = send serverurl, post_paramenters, playerkey, '/aliens/send'
+      end
+    end
+    post_paramenters = [2, playerkey.to_i, [3]]
     answer = send serverurl, post_paramenters, playerkey, '/aliens/send'
     if answer != false
       if answer.count == 4
