@@ -29,26 +29,15 @@ def main
   begin
     serverurl = ARGV[0]
     playerkey = ARGV[1]
-    if answer != false 
-      permutations = []
-      permutations.push([1,1,1,1])
-      permutations.push([1,1,1,2])
-      permutations.push([1,1,1,3])
-      permutations.push([1,1,1,4])
-      permutations.push([1,1,1,5])
-      permutations.push([1,1,1,6])
-      permutations.push([1,1,1,7])
-      # [a,b,c,d,e,f,g,h,i].permutation.to_a.each do |perm|
-      #   permutations.push perm[0..3]
-      # end
-      index= 0
-      permutations.each do |_perm|
-        index += 1
-        post_paramenters = [2, playerkey.to_i, [index]]
-        send serverurl, post_paramenters, playerkey, '/aliens/send'
-        post_paramenters = [3, playerkey.to_i, _perm]
-        answer = send serverurl, post_paramenters, playerkey, '/aliens/send'
-      end
+    post_paramenters = [2, playerkey.to_i, [1]]
+    send serverurl, post_paramenters, playerkey, '/aliens/send'
+    
+    post_paramenters = [3, playerkey.to_i, [1,1,1,1]]
+    send serverurl, post_paramenters, playerkey, '/aliens/send'
+
+    while true do
+      post_paramenters = [2, 1, [rand(0..255), rand(0..255), rand(0..255)], 1]
+      send serverurl, post_paramenters, playerkey, '/aliens/send'
     end
 
   rescue StandardError => e
