@@ -10,7 +10,7 @@ def main
     puts "ServerUrl: %s; PlayerKey: %s" % [serverurl, playerkey]
 
     uri = URI(serverurl)
-    post_paramenters = [2, playerkey.to_i, [nil]]
+    post_paramenters = [2, playerkey.to_i, nil]
     modulated_params = ICFPC::Functions.mod(post_paramenters)
     res = Net::HTTP.post(uri, modulated_params)
     if res.code == "200"
