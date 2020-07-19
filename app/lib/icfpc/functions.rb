@@ -112,13 +112,25 @@ module ICFPC
 				res
 			end
 
-			def send_to_alien(msg)
+			def send_to_alien(msg, debug = true)
 				api_key = ENV["API_KEY"]
 
 				abort 'No api key!!!' unless api_key
 				url = "https://icfpc2020-api.testkontur.ru/aliens/send?apiKey=%s" % api_key
 
-				resp = Net::HTTP.post(URI(url), mod(msg))
+				msg_to_send = mod(msg)
+				puts "-> #{msg_to_send}" if debug
+				resp = Net::HTTP.post(URI(url), msg_to_send)
+				puts "<- #{resp.body}" if debug
+
+				if resp.code =~ /^3/
+					puts "redirect target: %s" % resp["location"]
+					raise "redirected"
+				elsif resp.code != '200'
+					pp [resp, resp.each_header.to_a]
+					raise "error"
+				end
+
 				dem(resp.body)
 			end
 
