@@ -34,7 +34,7 @@ module ICFPC
 					res += '1'
 				end
 				res += '0'
-				all_bits_count = 2**factor
+				all_bits_count = 4*factor
 				num_as_bit_string = num.to_s(2)
 				(1..all_bits_count-num_as_bit_string.length).each do 
 					res += '0'
