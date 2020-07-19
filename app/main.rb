@@ -44,6 +44,8 @@ def main
       #   permutations.push perm[0..3]
       # end
       permutations.each do |_perm|
+        post_paramenters = [2, playerkey.to_i, [1]]
+        send serverurl, post_paramenters, playerkey, '/aliens/send'
         post_paramenters = [3, playerkey.to_i, _perm]
         answer = send serverurl, post_paramenters, playerkey, '/aliens/send'
       end
