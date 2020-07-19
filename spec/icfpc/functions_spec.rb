@@ -119,5 +119,12 @@ describe ICFPC::Functions do
     it "(1,(2,3),4)" do
       expect(subject.dem("1101100001111101100010110110001100110110010000")).to eq [1,[2,3],4]
     end
+
+    it "[1, 2, [256, 1, [448, 1, 64], [16, 128], nil], nil]" do
+      arr = [1, 2, [256, 1, [448, 1, 64], [16, 128], nil], nil]
+      modded = subject.mod [1, 2, [256, 1, [448, 1, 64], [16, 128], nil], nil]
+      subject.dem modded
+      expect(subject.dem(modded)).to eq arr
+    end
   end
 end

@@ -9,6 +9,7 @@ def send serverurl, post_paramenters, playerkey, api_query
 
   res = Net::HTTP.post(uri, ICFPC::Functions.mod(post_paramenters))
   if res.code == "200"
+    puts "Dem: %s" % res.body.to_s
     demodulated_response = ICFPC::Functions.dem(res.body)
     if demodulated_response != [0]
       puts "Server response: %s" % demodulated_response.to_s
