@@ -79,7 +79,7 @@ def main
     move_vectors = [[1, 1], [4, 4]]
 
     step = 1
-    ship_id = if gr.static_game_info.role = 1
+    ship_id = if gr.static_game_info.role == 1
       0
     else
       1
