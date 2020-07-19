@@ -143,6 +143,8 @@ module ICFPC
 				when "01", "10"
 					return dem_number(bit_string)
 				when "11"
+					return [[nil], ''] if bit_string == '110000'
+					return [[], ''] if bit_string == '1100'
 					result = []
 					rest = bit_string
 					loop do
@@ -185,7 +187,7 @@ module ICFPC
 
 			def dem_list_item(bit_string)
 				finished = false
-				elem = nil
+				elem = []
 				rest = nil
 				case bit_string[0..1]
 				when "00"
