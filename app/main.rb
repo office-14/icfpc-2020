@@ -26,28 +26,31 @@ def main
     post_paramenters = [2, playerkey.to_i, nil]
     puts "ServerUrl: %s; PlayerKey: %s; post_paramenters: %s" % [serverurl, playerkey, post_paramenters]
     send serverurl, post_paramenters
+    post_paramenters = [2, playerkey.to_i, [nil]]
+    puts "ServerUrl: %s; PlayerKey: %s; post_paramenters: %s" % [serverurl, playerkey, post_paramenters]
+    send serverurl, post_paramenters
 
     post_paramenters = [2, playerkey.to_i, [0]]
     puts "ServerUrl: %s; PlayerKey: %s; post_paramenters: %s" % [serverurl, playerkey, post_paramenters]
     send serverurl, post_paramenters
 
-    post_paramenters = [2, playerkey.to_i, [1]]
+    post_paramenters = [2, playerkey.to_i, [0,1]]
     puts "ServerUrl: %s; PlayerKey: %s; post_paramenters: %s" % [serverurl, playerkey, post_paramenters]
     send serverurl, post_paramenters
 
-    post_paramenters = [2, playerkey.to_i, [2]]
+    post_paramenters = [2, playerkey.to_i, [0,1,2]]
     puts "ServerUrl: %s; PlayerKey: %s; post_paramenters: %s" % [serverurl, playerkey, post_paramenters]
     send serverurl, post_paramenters
 
-    post_paramenters = [2, playerkey.to_i, [3]]
+    post_paramenters = [2, playerkey.to_i, [0,1,2,3]]
     puts "ServerUrl: %s; PlayerKey: %s; post_paramenters: %s" % [serverurl, playerkey, post_paramenters]
     send serverurl, post_paramenters
 
-    post_paramenters = [2, playerkey.to_i, [4]]
+    post_paramenters = [2, playerkey.to_i, [0,1,2,3,4]]
     puts "ServerUrl: %s; PlayerKey: %s; post_paramenters: %s" % [serverurl, playerkey, post_paramenters]
     send serverurl, post_paramenters
 
-    post_paramenters = [2, playerkey.to_i, [5]]
+    post_paramenters = [2, playerkey.to_i, [0,1,2,3,4,5]]
     puts "ServerUrl: %s; PlayerKey: %s; post_paramenters: %s" % [serverurl, playerkey, post_paramenters]
     send serverurl, post_paramenters
   rescue StandardError => e
