@@ -3,11 +3,11 @@ $:.unshift File.join(__dir__, 'lib')
 require 'net/http'
 require 'icfpc/functions'
 
-def send serverurl, post_paramenters
-  uri = URI(serverurl)
+def send serverurl, post_paramenters, playerkey, api_query
+  uri = URI(serverurl+api_query)
+  puts "ServerUrl: %s; PlayerKey: %s; post_paramenters: %s" % [serverurl+api_query, playerkey, post_paramenters]
 
-  modulated_params = ICFPC::Functions.mod(post_paramenters)
-  res = Net::HTTP.post(uri, modulated_params)
+  res = Net::HTTP.post(uri, ICFPC::Functions.mod(post_paramenters))
   if res.code == "200"
     demodulated_response = ICFPC::Functions.dem(res.body)
     puts "Server response: %s" % demodulated_response.to_s
@@ -24,35 +24,27 @@ def main
     serverurl = ARGV[0]
     playerkey = ARGV[1]
     post_paramenters = [2, playerkey.to_i, nil]
-    puts "ServerUrl: %s; PlayerKey: %s; post_paramenters: %s" % [serverurl, playerkey, post_paramenters]
-    send serverurl, post_paramenters
+    send serverurl, post_paramenters, playerkey, '/aliens/send'
     post_paramenters = [2, playerkey.to_i, [nil]]
-    puts "ServerUrl: %s; PlayerKey: %s; post_paramenters: %s" % [serverurl, playerkey, post_paramenters]
-    send serverurl, post_paramenters
+    send serverurl, post_paramenters, playerkey, '/aliens/send'
 
     post_paramenters = [2, playerkey.to_i, [0]]
-    puts "ServerUrl: %s; PlayerKey: %s; post_paramenters: %s" % [serverurl, playerkey, post_paramenters]
-    send serverurl, post_paramenters
+    send serverurl, post_paramenters, playerkey, '/aliens/send'
 
     post_paramenters = [2, playerkey.to_i, [0,1]]
-    puts "ServerUrl: %s; PlayerKey: %s; post_paramenters: %s" % [serverurl, playerkey, post_paramenters]
-    send serverurl, post_paramenters
+    send serverurl, post_paramenters, playerkey, '/aliens/send'
 
     post_paramenters = [2, playerkey.to_i, [0,1,2]]
-    puts "ServerUrl: %s; PlayerKey: %s; post_paramenters: %s" % [serverurl, playerkey, post_paramenters]
-    send serverurl, post_paramenters
+    send serverurl, post_paramenters, playerkey, '/aliens/send'
 
     post_paramenters = [2, playerkey.to_i, [0,1,2,3]]
-    puts "ServerUrl: %s; PlayerKey: %s; post_paramenters: %s" % [serverurl, playerkey, post_paramenters]
-    send serverurl, post_paramenters
+    send serverurl, post_paramenters, playerkey, '/aliens/send'
 
     post_paramenters = [2, playerkey.to_i, [0,1,2,3,4]]
-    puts "ServerUrl: %s; PlayerKey: %s; post_paramenters: %s" % [serverurl, playerkey, post_paramenters]
-    send serverurl, post_paramenters
+    send serverurl, post_paramenters, playerkey, '/aliens/send'
 
     post_paramenters = [2, playerkey.to_i, [0,1,2,3,4,5]]
-    puts "ServerUrl: %s; PlayerKey: %s; post_paramenters: %s" % [serverurl, playerkey, post_paramenters]
-    send serverurl, post_paramenters
+    send serverurl, post_paramenters, playerkey, '/aliens/send'
   rescue StandardError => e
     puts "Unexpected server response:"
     puts e
