@@ -11,12 +11,16 @@ def send serverurl, post_paramenters, playerkey, api_query
   if res.code == "200"
     demodulated_response = ICFPC::Functions.dem(res.body)
     puts "Server response: %s" % demodulated_response.to_s
+
+    return demodulated_response
   else
     puts "Unexpected server response:"
     puts "HTTP code: %s" % res.code
     puts "Response body: %s" % res.body
     exit(2)
   end
+
+  return false
 end
 
 def main
@@ -24,27 +28,14 @@ def main
     serverurl = ARGV[0]
     playerkey = ARGV[1]
     post_paramenters = [2, playerkey.to_i, nil]
-    send serverurl, post_paramenters, playerkey, '/aliens/send'
-    post_paramenters = [2, playerkey.to_i, [nil]]
-    send serverurl, post_paramenters, playerkey, '/aliens/send'
+    answer = send serverurl, post_paramenters, playerkey, '/aliens/send'
+    if answer != false
+      if answer.count == 4
+        post_paramenters = [3, playerkey.to_i, answer]
+        answer = send serverurl, post_paramenters, playerkey, '/aliens/send'
+      end
+    end
 
-    post_paramenters = [2, playerkey.to_i, [0]]
-    send serverurl, post_paramenters, playerkey, '/aliens/send'
-
-    post_paramenters = [2, playerkey.to_i, [0,1]]
-    send serverurl, post_paramenters, playerkey, '/aliens/send'
-
-    post_paramenters = [2, playerkey.to_i, [0,1,2]]
-    send serverurl, post_paramenters, playerkey, '/aliens/send'
-
-    post_paramenters = [2, playerkey.to_i, [0,1,2,3]]
-    send serverurl, post_paramenters, playerkey, '/aliens/send'
-
-    post_paramenters = [2, playerkey.to_i, [0,1,2,3,4]]
-    send serverurl, post_paramenters, playerkey, '/aliens/send'
-
-    post_paramenters = [2, playerkey.to_i, [0,1,2,3,4,5]]
-    send serverurl, post_paramenters, playerkey, '/aliens/send'
   rescue StandardError => e
     puts "Unexpected server response:"
     puts e
