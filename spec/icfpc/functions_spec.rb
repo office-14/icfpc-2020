@@ -161,6 +161,16 @@ describe ICFPC::Functions do
     end
   end
 
+  describe "modulate/demodulate" do
+    it "nil at end list" do
+      expect(subject.dem(subject.mod([-1, nil, nil]))).to match_array([-1, nil, nil])
+    end
+
+    it "[nil] at end list" do
+      expect(subject.dem(subject.mod([-1, nil, [nil]]))).to match_array([-1, nil, [nil]])
+    end
+  end
+
   def rand_bignum(max = 1_000_000_000_000_000_000)
     rand(1..max) * [1, -1].sample
   end
