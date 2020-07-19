@@ -70,6 +70,7 @@ def main
     serverurl = ARGV[0]
     playerkey = ARGV[1]
     post_paramenters = [2, playerkey.to_i, [1]]
+
     answer = send serverurl, post_paramenters, playerkey
 
     post_paramenters = [3, playerkey.to_i, [1, 1, 1, 1]]
