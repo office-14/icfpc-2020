@@ -27,6 +27,10 @@ def main
     puts "ServerUrl: %s; PlayerKey: %s; post_paramenters: %s" % [serverurl, playerkey, post_paramenters]
     send serverurl, post_paramenters
 
+    post_paramenters = [2, playerkey.to_i, [0]]
+    puts "ServerUrl: %s; PlayerKey: %s; post_paramenters: %s" % [serverurl, playerkey, post_paramenters]
+    send serverurl, post_paramenters
+
     post_paramenters = [2, playerkey.to_i, [1]]
     puts "ServerUrl: %s; PlayerKey: %s; post_paramenters: %s" % [serverurl, playerkey, post_paramenters]
     send serverurl, post_paramenters
