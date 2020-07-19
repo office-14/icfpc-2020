@@ -34,12 +34,12 @@ def main
     if answer != false 
       permutations = []
       permutations.push([1,1,1,1])
-      permutations.push([0,0,0,1])
-      permutations.push([1,0,0,1])
-      permutations.push([1,1,0,1])
-      permutations.push([1,0,1,1])
-      permutations.push([0,0,1,1])
-      permutations.push([0,1,1,1])
+      permutations.push([1,1,1,2])
+      permutations.push([1,1,1,3])
+      permutations.push([1,1,1,4])
+      permutations.push([1,1,1,5])
+      permutations.push([1,1,1,6])
+      permutations.push([1,1,1,7])
       # [a,b,c,d,e,f,g,h,i].permutation.to_a.each do |perm|
       #   permutations.push perm[0..3]
       # end
