@@ -49,7 +49,7 @@ describe ICFPC::Functions do
 
   describe "modulate non integers" do
     it "nil" do
-      expect(subject.mod(nil)).to eq "11"
+      expect(subject.mod(nil)).to eq "00"
     end
 
     it "(1,2)" do
@@ -109,7 +109,7 @@ describe ICFPC::Functions do
 
   describe "demodulate non integers" do
     it "nil" do
-      expect(subject.dem("11")).to eq nil
+      expect(subject.dem("00")).to eq nil
     end
 
     it "(1,2)" do
