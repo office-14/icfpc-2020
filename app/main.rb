@@ -30,10 +30,24 @@ def main
     serverurl = ARGV[0]
     playerkey = ARGV[1]
     post_paramenters = [2, playerkey.to_i, [1]]
-    answer_join = send serverurl, post_paramenters, playerkey, '/aliens/send'
-    
-    post_paramenters = [3, playerkey.to_i, [1,1,1,1]]
     answer = send serverurl, post_paramenters, playerkey, '/aliens/send'
+    if answer != false 
+      permutations = []
+      permutations.push([1,1,1,1])
+      permutations.push([0,0,0,1])
+      permutations.push([1,0,0,1])
+      permutations.push([1,1,0,1])
+      permutations.push([1,0,1,1])
+      permutations.push([0,0,1,1])
+      permutations.push([0,1,1,1])
+      # [a,b,c,d,e,f,g,h,i].permutation.to_a.each do |perm|
+      #   permutations.push perm[0..3]
+      # end
+      permutations.each do |_perm|
+        post_paramenters = [3, playerkey.to_i, _perm]
+        answer = send serverurl, post_paramenters, playerkey, '/aliens/send'
+      end
+    end
 
   rescue StandardError => e
     puts "Unexpected server response:"
