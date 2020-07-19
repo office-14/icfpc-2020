@@ -29,25 +29,12 @@ def main
   begin
     serverurl = ARGV[0]
     playerkey = ARGV[1]
-    post_paramenters = [2, playerkey.to_i, [1]]
-    send serverurl, post_paramenters, playerkey, '/aliens/send'
-    
-    post_paramenters = [3, playerkey.to_i, [1,1,1,1]]
-    send serverurl, post_paramenters, playerkey, '/aliens/send'
-
-
     post_paramenters = [2, playerkey.to_i, [2]]
     send serverurl, post_paramenters, playerkey, '/aliens/send'
     
     post_paramenters = [3, playerkey.to_i, [1,1,1,2]]
     send serverurl, post_paramenters, playerkey, '/aliens/send'
 
-
-    post_paramenters = [2, playerkey.to_i, [3]]
-    send serverurl, post_paramenters, playerkey, '/aliens/send'
-    
-    post_paramenters = [3, playerkey.to_i, [1,1,1,3]]
-    send serverurl, post_paramenters, playerkey, '/aliens/send'
     # index = 0
     # while true do
     #   # index += 1
