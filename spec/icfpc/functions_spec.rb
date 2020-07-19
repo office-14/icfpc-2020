@@ -47,6 +47,20 @@ describe ICFPC::Functions do
     end
   end
 
+  describe "modulate non integers" do
+    it "nil" do
+      expect(subject.mod(nil)).to eq "11"
+    end
+
+    it "(1,2)" do
+      expect(subject.mod([1,2])).to eq "1101100001110110001000"
+    end
+
+    it "(1,(2,3),4)" do
+      expect(subject.mod([1,[2,3],4])).to eq "1101100001111101100010110110001100110110010000"
+    end
+  end
+
   describe "demodulate" do
     it "0" do
       expect(subject.dem("010")).to eq 0
@@ -90,6 +104,20 @@ describe ICFPC::Functions do
 
     it "-256" do
       expect(subject.dem("101110000100000000")).to eq(-256)
+    end
+  end
+
+  describe "demodulate non integers" do
+    it "nil" do
+      expect(subject.dem("11")).to eq nil
+    end
+
+    it "(1,2)" do
+      expect(subject.dem("1101100001110110001000")).to eq [1,2]
+    end
+
+    it "(1,(2,3),4)" do
+      expect(subject.dem("1101100001111101100010110110001100110110010000")).to eq [1,[2,3],4]
     end
   end
 end
