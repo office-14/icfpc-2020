@@ -1,4 +1,5 @@
 require 'set'
+require 'net/http'
 
 module ICFPC
 	module Functions
@@ -109,6 +110,16 @@ module ICFPC
 				raise "can't demodulate rest #{rest}" if rest.size > 0
 				
 				res
+			end
+
+			def send_to_alien(msg)
+				api_key = ENV["API_KEY"]
+
+				abort 'No api key!!!' unless api_key
+				url = "https://icfpc2020-api.testkontur.ru/aliens/send?apiKey=%s" % api_key
+
+				resp = Net::HTTP.post(URI(url), mod(msg))
+				dem(resp.body)
 			end
 
 			private
