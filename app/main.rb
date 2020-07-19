@@ -10,7 +10,9 @@ def send serverurl, post_paramenters, playerkey, api_query
   res = Net::HTTP.post(uri, ICFPC::Functions.mod(post_paramenters))
   if res.code == "200"
     demodulated_response = ICFPC::Functions.dem(res.body)
-    puts "Server response: %s" % demodulated_response.to_s
+    if demodulated_response != [0]
+      puts "Server response: %s" % demodulated_response.to_s
+    end
 
     return demodulated_response
   else
@@ -30,24 +32,21 @@ def main
     post_paramenters = [2, playerkey.to_i, [1]]
     answer = send serverurl, post_paramenters, playerkey, '/aliens/send'
     if answer != false
-      if answer.count == 4
-        post_paramenters = [3, playerkey.to_i, answer]
-        answer = send serverurl, post_paramenters, playerkey, '/aliens/send'
+      a = answer[2][0]
+      b = answer[2][1]
+      c = answer[2][2][0]
+      d = answer[2][2][1]
+      e = answer[2][2][2]
+      f = answer[2][3][0]
+      g = answer[2][3][1]
+      permutations = []
+      [a,b,c,d,e,f].permutation.to_a.each do |perm|
+        permutations.push perm[0..3]
       end
-    end
-    post_paramenters = [2, playerkey.to_i, [2]]
-    answer = send serverurl, post_paramenters, playerkey, '/aliens/send'
-    if answer != false
-      if answer.count == 4
-        post_paramenters = [3, playerkey.to_i, answer]
-        answer = send serverurl, post_paramenters, playerkey, '/aliens/send'
-      end
-    end
-    post_paramenters = [2, playerkey.to_i, [3]]
-    answer = send serverurl, post_paramenters, playerkey, '/aliens/send'
-    if answer != false
-      if answer.count == 4
-        post_paramenters = [3, playerkey.to_i, answer]
+      permutations = permutations.uniq
+
+      permutations.each do |_perm|
+        post_paramenters = [3, playerkey.to_i, _perm]
         answer = send serverurl, post_paramenters, playerkey, '/aliens/send'
       end
     end
