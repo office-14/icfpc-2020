@@ -12,8 +12,18 @@ module ICFPC
     end
   end
 
+  class Cons
+    attr_accessor :elements
+
+    def initialize(elements)
+      @elements = elements
+    end
+  end
+
   module Functions
     FUNCTION_NAMES = Set["add", "negate", "mod", "dem", "lt", "inc", "dec", "mul", "div", "eq", "pwr2", "car", "cdr", "cons", "isnil", "nil"]
+
+    
 
     class << self
       def add x1, x2
@@ -106,6 +116,11 @@ module ICFPC
             end
           end
           res += '00'
+        elsif num.kind_of?(Cons)
+          res += '11'
+          num.elements.each do |num_element|
+            res += mod num_element
+          end
         else
           return '010' if num == 0
           if num >= 0
