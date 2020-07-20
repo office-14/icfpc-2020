@@ -164,7 +164,6 @@ module ICFPC
 					current_two_chars = num_as_bit_string[current_index..current_index+1]
 					if current_two_chars == '11'
 						next_two_chars = num_as_bit_string[current_index..current_index+1]
-						if 
 						if prev_value == 'number' || prev_value == ']'
 							current_value = ','
 							arr_str += ','
