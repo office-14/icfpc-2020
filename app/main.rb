@@ -76,7 +76,7 @@ def main
     answer = send serverurl, post_paramenters, playerkey
     gr = GameResponse.new(answer)
 
-    move_vectors = [ICFPC::Cons.new([1, 1]), ICFPC::Cons.new([4, 4])]
+    move_vectors = [ICFPC::Cons.new([1, 1]), ICFPC::Cons.new([1, -1])]
 
     step = 1
     ship_id = if gr.static_game_info.role == 1
