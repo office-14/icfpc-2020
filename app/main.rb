@@ -77,7 +77,17 @@ def main
           begin
             shoot_x = answer_action[3][2][0][0][2][4][0][2][0]
             shoot_y = answer_action[3][2][0][0][2][4][0][2][1]
-            commands.push [2, ship, ICFPC::Cons.new([shoot_x-2,shoot_y-4]), 0]
+            if index == 1
+              commands.push [2, ship, ICFPC::Cons.new([shoot_x-2,shoot_y-4]), 1]
+            elsif index == 2
+              commands.push [2, ship, ICFPC::Cons.new([shoot_x-2,shoot_y-4]), 0]
+            elsif index == 3
+              commands.push [2, ship, ICFPC::Cons.new([shoot_x-2,shoot_y-4]), 196]
+            elsif index == 4
+              commands.push [2, ship, ICFPC::Cons.new([shoot_x-2,shoot_y-4]), 78]
+            elsif index == 5
+              commands.push [2, ship, ICFPC::Cons.new([shoot_x-2,shoot_y-4]), 38]
+            end
           rescue
             commands.push [0, ship, ICFPC::Cons.new(variables_move.sample(1)[0])]
           end
