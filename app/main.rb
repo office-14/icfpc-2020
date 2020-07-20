@@ -75,9 +75,9 @@ def main
           commands.push [0, ship, ICFPC::Cons.new(wall_way_move)]
         else
           begin
-            shoot_x = answer_action[3][2][0][0][2][0]
-            shoot_y = answer_action[3][2][0][0][2][1]
-            commands.push [2, ship, ICFPC::Cons.new([shoot_x-2,shoot_y+2]), 1]
+            shoot_x = answer_action[3][2][0][0][2][4][0][2][0]
+            shoot_y = answer_action[3][2][0][0][2][4][0][2][1]
+            commands.push [2, ship, ICFPC::Cons.new([shoot_x,shoot_y]), 1]
           rescue
             commands.push [2, ship, ICFPC::Cons.new(variables_move.sample(1)[0])]
           end
