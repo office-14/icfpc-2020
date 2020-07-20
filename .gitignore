@@ -37,3 +37,6 @@ msbuild.wrn
 .vs/
 
 Dockerfile
+.DS_Store
+.envrc
+tmp/

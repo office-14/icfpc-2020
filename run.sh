@@ -1,4 +1,3 @@
 #!/bin/sh
 
-cd ./build
-dotnet app.dll "$@" || echo "run error code: $?"
+ruby app/main.rb "$@" || echo "run error code: $?"

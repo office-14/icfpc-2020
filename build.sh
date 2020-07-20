@@ -1,2 +1,2 @@
 #!/bin/sh
-dotnet publish -c release -o ./build
+echo "Build not required"
