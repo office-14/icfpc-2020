@@ -9,10 +9,14 @@ def send serverurl, post_paramenters, playerkey, api_query
 
   res = Net::HTTP.post(uri, ICFPC::Functions.mod(post_paramenters))
   if res.code == "200"
-    puts "Dem: %s" % res.body.to_s
-    demodulated_response = ICFPC::Functions.dem(res.body)
-    if demodulated_response != [0]
-      puts "Server response: %s" % demodulated_response.to_s
+    demodulated_response = []
+    begin
+      demodulated_response = ICFPC::Functions.dem(res.body)
+      if demodulated_response != [0]
+        puts "Server response: %s" % demodulated_response.to_s
+      end
+    rescue
+      puts "Demodulate error: %s" % res.body.to_s
     end
 
     return demodulated_response
@@ -50,9 +54,11 @@ def main
         post_paramenters = [4, playerkey.to_i, [[0, ship, ICFPC::Cons.new([rand(-1..1),rand(-1..1)])]]]
       else
         if index == 2
-          post_paramenters = [4, playerkey.to_i, [[3, ship, ICFPC::Cons.new([0,0,0,1])]]]
+          post_paramenters = [4, playerkey.to_i, [[3, ship, ICFPC::Cons.new([0,1,1,1])]]]
+        elsif index == 4
+          post_paramenters = [4, playerkey.to_i, [[3, ship, ICFPC::Cons.new([0,1,1,1]), 1]]]
         else
-          post_paramenters = [4, playerkey.to_i, [[3, ship, ICFPC::Cons.new([0,0,0,1]), 1]]]
+          post_paramenters = [4, playerkey.to_i, [[0, ship, ICFPC::Cons.new([rand(-1..1),rand(-1..1)])]]]
         end
       end
       send serverurl, post_paramenters, playerkey, '/aliens/send'
