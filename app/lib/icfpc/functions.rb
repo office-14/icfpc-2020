@@ -1,7 +1,17 @@
 require 'set'
 require 'net/http'
+require_relative './tree_node'
 
 module ICFPC
+  class CommonMeta < Struct.new(:bit_string)
+  end
+
+  class DemodulateArrayMeta < Struct.new(:depth, :bit_string, :closed)
+    def initialize(depth, bit_string, closed = false)
+      super
+    end
+  end
+
   class Cons
     attr_accessor :elements
 
