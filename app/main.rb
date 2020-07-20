@@ -46,13 +46,26 @@ def main
       ship = 1
     end
 
+    variables_move = [
+      [0,-1],
+      [0,1],
+      [1,0],
+      [-1,0],
+      [1,1],
+      [-1,-1]
+    ]
     index = 0
     while true do
       # post_paramenters = [4, playerkey.to_i, [[2, ship, ICFPC::Cons.new([rand(0..100),rand(0..100)]), 1]]]
+      
       if index == 0
         post_paramenters = [4, playerkey.to_i, [[3, ship, [90,0,0,38]]]]
       else
-        post_paramenters = [4, playerkey.to_i, [[0, ship, ICFPC::Cons.new([rand(-1..1),rand(-1..1)])], [0, 1+1, ICFPC::Cons.new([rand(-1..1),rand(-1..1)])], [0, 1+2, ICFPC::Cons.new([rand(-1..1),rand(-1..1)])]]]
+        move_rand1 = variables_move.sample(1)[0]
+        move_rand2 = variables_move.sample(1)[0]
+        move_rand3 = variables_move.sample(1)[0]
+        move_rand4 = variables_move.sample(1)[0]
+        post_paramenters = [4, playerkey.to_i, [[0, ship, ICFPC::Cons.new(move_rand1)], [0, 1+1, ICFPC::Cons.new(move_rand2)], [0, 1+2, ICFPC::Cons.new(move_rand3)], [0, 1+2, ICFPC::Cons.new(move_rand4)]]]
       end
       
       send serverurl, post_paramenters, playerkey, '/aliens/send'
