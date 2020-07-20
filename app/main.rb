@@ -52,7 +52,7 @@ def main
       if index == 0
         post_paramenters = [4, playerkey.to_i, [[3, ship, [90,0,0,38]]]]
       else
-        post_paramenters = [4, playerkey.to_i, [[0, ship, ICFPC::Cons.new([rand(-1..1),rand(-1..1)])], [0, ship+1, ICFPC::Cons.new([rand(-1..1),rand(-1..1)])], [0, ship+2, ICFPC::Cons.new([rand(-1..1),rand(-1..1)])]]]
+        post_paramenters = [4, playerkey.to_i, [[0, ship, ICFPC::Cons.new([rand(-1..1),rand(-1..1)])], [0, 1+1, ICFPC::Cons.new([rand(-1..1),rand(-1..1)])], [0, 1+2, ICFPC::Cons.new([rand(-1..1),rand(-1..1)])]]]
       end
       
       send serverurl, post_paramenters, playerkey, '/aliens/send'
