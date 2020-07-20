@@ -108,9 +108,11 @@ def main
       puts "ships&commands #{gr.game_state.ships_and_commands}"
       commands = []
       gr.game_state.ships_and_commands.each do |ship|
-        commands.push([0, ship[0][1], ICFPC::Cons.new([rand(-2..2), rand(-2..2)])])
-        commands.push([3, ship[0][1], [90,0,0,34]]) if step % 2 == 0
-        #commands.push([2, ship[0][1], gr.static_game_info.role, gr.static_game_info.x3])
+        if ship[0][0] != gr.static_game_info.role
+          commands.push([2, ship[0][1], ship[0][2], gr.static_game_info.x3])
+        end
+        commands.push([0, ship[0][1], ICFPC::Cons.new([rand(-1..1), rand(-1..1)])])
+        commands.push([3, ship[0][1], [90,0,0,34]])
       end
 
       post_paramenters = [4, playerkey.to_i, commands]
