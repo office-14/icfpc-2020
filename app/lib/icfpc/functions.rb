@@ -2,16 +2,18 @@ require 'set'
 require 'net/http'
 
 module ICFPC
+  class Cons
+    attr_accessor :elements
+
+    def initialize(elements)
+      @elements = elements
+    end
+  end
+
 	module Functions
 		FUNCTION_NAMES = Set["add", "negate", "mod", "dem", "lt", "inc", "dec", "mul", "div", "eq", "pwr2", "car", "cdr", "cons", "isnil", "nil"]
 
-		class Cons
-			attr_accessor :elements
 
-			def initialize(elements)
-		        @elements = elements
-	      	end
-		end
 
 		class << self
 			def add x1, x2
@@ -118,7 +120,7 @@ module ICFPC
 				res
 			end
 
-			def dem
+			def dem2
 				if num_as_bit_string == '00'
 					return nil
 				end
@@ -127,9 +129,9 @@ module ICFPC
 					return elem
 				end
 
-				success,  = maybe_array num_as_bit_string[2..]
+				success, result = maybe_array num_as_bit_string[2..]
 				if success == false
-					maybe_cons num_as_bit_string[2..]
+					success, result = maybe_cons num_as_bit_string[2..]
 				end
 			end
 
@@ -145,7 +147,7 @@ module ICFPC
 
 			end
 
-			def dem2 num_as_bit_string
+			def dem3 num_as_bit_string
 				if num_as_bit_string == '00'
 					return nil
 				end
