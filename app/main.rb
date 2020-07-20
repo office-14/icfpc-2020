@@ -92,7 +92,7 @@ def main
 
     answer = send serverurl, post_paramenters, playerkey
 
-    post_paramenters = [3, playerkey.to_i, [1, 1, 1, 1]]
+    post_paramenters = [3, playerkey.to_i, [196, 0, 8, 78]]
     answer = send serverurl, post_paramenters, playerkey
     gr = GameResponse.new(answer)
 
@@ -108,8 +108,8 @@ def main
       puts "ships&commands #{gr.game_state.ships_and_commands}"
       commands = []
       gr.game_state.ships_and_commands.each do |ship|
-        commands.push(commands.push([0, ship[0][1], ICFPC::Cons.new([rand(-2,2), rand(-2,2)])]))
-        commands.push([3, ship[0][1], [0,0,0,1]]) if step % 2 == 0
+        commands.push([0, ship[0][1], ICFPC::Cons.new([rand(-2,2), rand(-2,2)])])
+        commands.push([3, ship[0][1], [90,0,0,34]]) if step % 2 == 0
         commands.push([2, ship[0][1], gr.static_game_info.role, gr.static_game_info.x3])
       end
 
