@@ -76,7 +76,7 @@ def main
     answer = send serverurl, post_paramenters, playerkey
     gr = GameResponse.new(answer)
 
-    move_vectors = [[1, 1], [4, 4]]
+    move_vectors = [Cons.new([1, 1]), Cons.new([4, 4])]
 
     step = 1
     ship_id = if gr.static_game_info.role == 1
