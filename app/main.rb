@@ -68,8 +68,14 @@ def main
         move_rand4 = variables_move.sample(1)[0]
 
         wall_way_move = wall_way[(index%2)]
+        commands = []
+        commands.push [0, ship, ICFPC::Cons.new(wall_way_move)]
+        commands.push [0, 1+1, ICFPC::Cons.new(move_rand1)]
+        commands.push [0, 1+2, ICFPC::Cons.new(move_rand2)]
+        commands.push [0, 1+3, ICFPC::Cons.new(move_rand3)]
+        commands.push [0, 1+4, ICFPC::Cons.new(move_rand4)]
 
-        post_paramenters = [4, playerkey.to_i, [[0, ship, ICFPC::Cons.new(wall_way_move)], [0, 1+1, ICFPC::Cons.new(move_rand1)], [0, 1+1, ICFPC::Cons.new(move_rand2)], [0, 1+2, ICFPC::Cons.new(move_rand3)], [0, 1+2, ICFPC::Cons.new(move_rand4)]]]
+        post_paramenters = [4, playerkey.to_i, commands]
       end
       
       send serverurl, post_paramenters, playerkey, '/aliens/send'
