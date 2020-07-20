@@ -79,8 +79,8 @@ def main
             shoot_y = answer_action[3][2][0][0][2][1]
             commands.push [2, ship, ICFPC::Cons.new([shoot_x,shoot_y]), 1]
           rescue
+            commands.push [2, ship, ICFPC::Cons.new(variables_move.sample(1)[0])]
           end
-          commands.push [0, ship, ICFPC::Cons.new(move_rand1)]
         end
         commands.push [0, 1+1, ICFPC::Cons.new(move_rand1)]
         commands.push [0, 1+2, ICFPC::Cons.new(move_rand2)]
