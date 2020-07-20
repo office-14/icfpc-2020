@@ -217,93 +217,126 @@ module ICFPC
 				return eval(arr_str)
 			end
 
-			def send_to_alien(msg, debug = true)
-				api_key = ENV["API_KEY"]
+			def dem(bit_string)
+        parsed_tree, rest = dem_to_tree(bit_string)
+        raise "can't demodulate rest #{rest}" if rest.size > 0
+        dem_tree_to_data(parsed_tree)
+      rescue
+        raise "Got error when demodulating: #{$!.inspect}. For #{bit_string}"
+      end
 
-				abort 'No api key!!!' unless api_key
-				url = "https://icfpc2020-api.testkontur.ru/aliens/send?apiKey=%s" % api_key
+      def dem_to_tree(bit_string, parent = nil, no_comma: false)
+        # pp ['tick', bit_string, parent]
+        return [parent.get_root, ""] if bit_string.empty?
 
-				msg_to_send = mod(msg)
-				puts "-> #{msg_to_send}" if debug
-				resp = Net::HTTP.post(URI(url), msg_to_send)
-				puts "<- #{resp.body}" if debug
+        case bit_string[0..1]
+        when "00"
+          if parent.nil? or no_comma
+            # pp ['create nil value']
+            new_node = TreeNode.new(nil, parent: parent, meta: CommonMeta.new(bit_string))
+            dem_to_tree(bit_string[2..], parent || new_node)
+          else
+            if parent&.value.kind_of?(Array) && !parent.meta.closed
+              if parent.meta.depth == 1 and bit_string.size > 2
+                # pp ['set nil', bit_string, parent]
+                # need backtrace for [nil]
+                cur_node = parent
 
-				if resp.code =~ /^3/
-					puts "redirect target: %s" % resp["location"]
-					raise "redirected"
-				elsif resp.code != '200'
-					pp [resp, resp.each_header.to_a]
-					raise "error"
-				end
+                if cur_node.children.size > 0 && !cur_node.children.last.value.kind_of?(Array)
+                  while !cur_node.children.last.value.kind_of?(Array)
+                    cur_node.children.pop
+                  end
 
-				dem(resp.body)
-			end
+                  if cur_node.children.last.value.kind_of?(Array)
+                    cur_node.children.last.meta.closed = false
+                    dem_to_tree(cur_node.children.last.meta.bit_string, cur_node.children.last, no_comma: true)
+                  else
+                    raise 'unknown backtrace case'
+                  end
+                else
+                  while cur_node.children.size > 0 && cur_node.children.last.value.kind_of?(Array)
+                    cur_node = cur_node.children.last
+                  end
 
-			private
+                  new_node = TreeNode.new(nil, parent: cur_node, meta: CommonMeta.new(bit_string))
+                  dem_to_tree(bit_string[2..], parent)
+                end
+              else
+                # pp ['closing']
+                parent.meta.closed = true
+                node_to_return = if parent.parent.nil?
+                  parent
+                else
+                  parent.parent
+                end
+                dem_to_tree(bit_string[2..], node_to_return)
+              end
+            else
+              raise "unknown case for closing array/backtracing"
+            end
+          end
+        when "01", "10"
+          num, rest = dem_number(bit_string)
+          new_node = TreeNode.new(num, parent: parent, meta: CommonMeta.new(bit_string))
+          dem_to_tree(rest, parent || new_node)
+        when "11"
+          if !no_comma && parent && parent.children&.size > 0
+            # it's comma
+            # puts "comma"
+            dem_to_tree(bit_string[2..], parent, no_comma: true)
+          else
+            # open array
+            # puts "create array"
+            depth = parent&.meta&.depth
+            if depth
+              depth += 1
+            else
+              depth = 1
+            end
+            dem_to_tree(bit_string[2..], TreeNode.new([], parent: parent, meta: DemodulateArrayMeta.new(depth, bit_string)))
+          end
+        end
+      end
 
-			def dem_number(bit_string)
-				sign = nil
-				case bit_string[0..1]
-				when "01"
-					sign = 1
-				when "10"
-					sign = -1
-				else
-					raise "bad number sign #{bit_string}"
-				end
+      def dem_tree_to_data(parsed_tree)
+        if parsed_tree.value.kind_of? Array
+          parsed_tree.children.map { |i| dem_tree_to_data(i) }.tap do |ch|
+            if parsed_tree.meta.closed == false
+              puts "bad bracers balance for #{ch.inspect}"
+            end
+          end
+        else
+          parsed_tree.value
+        end
+      end
 
-				number_width = 0
-				cur_index = 2
-				while bit_string[cur_index] == '1'
-					number_width += 1
-					cur_index += 1
-				end
+      def dem_number(bit_string)
+        sign = nil
+        case bit_string[0..1]
+        when "01"
+          sign = 1
+        when "10"
+          sign = -1
+        else
+          raise "bad number sign #{bit_string}"
+        end
 
-				raise "bad number width" unless bit_string[cur_index] == '0'
+        number_width = 0
+        cur_index = 2
+        while bit_string[cur_index] == '1'
+          number_width += 1
+          cur_index += 1
+        end
 
-				num = 0
-				if number_width > 0
-					num = bit_string[cur_index + 1, number_width * 4].to_i(2)
-				end
+        raise "bad number width" unless bit_string[cur_index] == '0'
 
-				return [sign * num, bit_string[(cur_index + 1 + number_width * 4)..]]
-			end
+        num = 0
+        if number_width > 0
+          num = bit_string[cur_index + 1, number_width * 4].to_i(2)
+        end
 
-			def dem_next(bit_string)
-				case bit_string[0..1]
-				when "00"
-					return [nil, bit_string[2..]]
-				when "01", "10"
-					return dem_number(bit_string)
-				when "11"
-					result = []
-					rest = bit_string
-					loop do
-						rest, elem, finished = dem_list_item(rest)
-						break if finished
-						result << elem
-					end
-					
-					return [result, rest]
-				end
-			end
-
-			def dem_list_item(bit_string)
-				finished = false
-				elem = nil
-				rest = nil
-				case bit_string[0..1]
-				when "00"
-					finished = true
-					rest = bit_string[2..]
-				when "11"
-					elem, rest = dem_next(bit_string[2..])
-				else
-					raise "bad array item #{bit_string}"
-				end
-
-				[rest, elem, finished]
-			end
+        return [sign * num, bit_string[(cur_index + 1 + number_width * 4)..]]
+      end
 		end
 	end
 end

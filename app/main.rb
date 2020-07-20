@@ -47,9 +47,9 @@ def main
       index += 1
       # post_paramenters = [4, playerkey.to_i, [2, 1, [rand(0..255), rand(0..255), rand(0..255)], 1]] 
       if index % 2 > 0
-        post_paramenters = [4, playerkey.to_i, [[0, ship, [2, 2, 2]]]]
+        post_paramenters = [4, playerkey.to_i, [[0, ship, ICFPC::Cons.new(5,10)]]]
       else
-        post_paramenters = [4, playerkey.to_i, [[1, ship]]]
+        post_paramenters = [4, playerkey.to_i, [[0, ship, ICFPC::Cons.new(0,0)]]]
       end
       send serverurl, post_paramenters, playerkey, '/aliens/send'
     end
