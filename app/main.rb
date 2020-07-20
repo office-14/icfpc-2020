@@ -67,9 +67,21 @@ def main
         move_rand3 = variables_move.sample(1)[0]
         move_rand4 = variables_move.sample(1)[0]
 
-        wall_way_move = wall_way[(index%2)]
+        
         commands = []
-        commands.push [0, ship, ICFPC::Cons.new(wall_way_move)]
+        if role.to_i == 1
+          wall_way_move = wall_way[(index%2)]
+          commands.push [0, ship, ICFPC::Cons.new(wall_way_move)]]
+        else
+          commands.push [0, ship, ICFPC::Cons.new(move_rand1)]
+          begin
+            shoot_x = aaa[3][2][0][0][2][0]
+            shoot_y = aaa[3][2][0][0][2][1]
+            commands.push [2, ship, ICFPC::Cons.new([shoot_x,shoot_y]), 1]
+          rescue
+          end
+          commands.push [0, ship, ICFPC::Cons.new(move_rand1)]
+        end
         commands.push [0, 1+1, ICFPC::Cons.new(move_rand1)]
         commands.push [0, 1+2, ICFPC::Cons.new(move_rand2)]
         commands.push [0, 1+3, ICFPC::Cons.new(move_rand3)]
