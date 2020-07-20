@@ -9,11 +9,26 @@ class StaticGameInfo
   def initialize(resp)
     raise "static game info is not array: #{resp.inspect}" unless resp.kind_of?(Array)
 
-    _, @role = resp
+    @x0, @role, @x2, @x3, @x4 = resp
   end
 
   def role
     Integer(@role)
+  end
+  def x3
+    @x3
+  end
+end
+
+class GameState
+  def initialize(resp)
+    raise "game_state is not array: #{resp.inspect}" unless resp.kind_of?(Array)
+
+    @game_tick, @x1, @ships_and_commands = resp
+  end
+
+  def ships_and_commands
+    @ships_and_commands
   end
 end
 
@@ -43,6 +58,10 @@ class GameResponse
 
   def static_game_info
     @static_game_info ||= StaticGameInfo.new(@static_game_info_raw)
+  end
+
+  def game_state
+    @game_state ||= GameState.new(@game_state_raw)
   end
 end
 
@@ -80,13 +99,21 @@ def main
     move_vectors = [ICFPC::Cons.new([1, 1]), ICFPC::Cons.new([1, -1])]
 
     step = 1
-    ship_id = if gr.static_game_info.role == 1
-      0
-    else
-      1
-    end
+    ship_id = 1 - gr.static_game_info.role
+
+#"x4":[0,0,0,1],"x5":0,"x6":128,"x7":2
+#[1, [16, 128], [[[1, 0, [-29, -46, [-1, 2, [0, 1, 1, 1], 7, 64, 1], [[0, [1, -1]]], [[0, 1, [29, 46, [1, -2, [191, 0, 8, 64], 0, 64, 1], [[0, [-1, 1]]]]]]]]]]]
+
     while (gr.success && gr.game_stage == :started)
-      post_paramenters = [4, playerkey.to_i, [[0, ship_id, move_vectors.sample]]]
+      puts "ships&commands #{gr.game_state.ships_and_commands}"
+      commands = []
+      gr.game_state.ships_and_commands.each do |ship|
+        commands.push(commands.push([0, ship[0][1], ICFPC::Cons.new([rand(-2,2), rand(-2,2)])]))
+        commands.push([3, ship[0][1], [0,0,0,1]]) if step % 2 == 0
+        commands.push([2, ship[0][1], gr.static_game_info.role, gr.static_game_info.x3])
+      end
+
+      post_paramenters = [4, playerkey.to_i, commands]
       answer = send serverurl, post_paramenters, playerkey
       gr = GameResponse.new(answer)
       sleep 0.5
