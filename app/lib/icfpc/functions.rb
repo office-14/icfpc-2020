@@ -5,6 +5,14 @@ module ICFPC
 	module Functions
 		FUNCTION_NAMES = Set["add", "negate", "mod", "dem", "lt", "inc", "dec", "mul", "div", "eq", "pwr2", "car", "cdr", "cons", "isnil", "nil"]
 
+		class Cons
+			attr_accessor :elements
+
+			def initialize(elements)
+		        @elements = elements
+	      	end
+		end
+
 		class << self
 			def add x1, x2
 				x1 + x2
@@ -74,6 +82,11 @@ module ICFPC
 						end
 					end
 					res += '00'
+				elsif num.kind_of?(Cons)
+					res += '11'
+					num.elements.each do |num_element|
+						res += mod num_element
+					end
 				else
 					return '010' if num == 0
 					if num >= 0
@@ -105,7 +118,34 @@ module ICFPC
 				res
 			end
 
-			def dem num_as_bit_string
+			def dem
+				if num_as_bit_string == '00'
+					return nil
+				end
+				if num_as_bit_string[0..1] == '10' || num_as_bit_string[0..1] == '01'
+					elem, rest =  dem_number num_as_bit_string
+					return elem
+				end
+
+				success,  = maybe_array num_as_bit_string[2..]
+				if success == false
+					maybe_cons num_as_bit_string[2..]
+				end
+			end
+
+			def maybe_array bits
+
+			end
+
+			def maybe_cons bits
+
+			end
+
+			def maybe_comma bits
+
+			end
+
+			def dem2 num_as_bit_string
 				if num_as_bit_string == '00'
 					return nil
 				end
@@ -116,9 +156,13 @@ module ICFPC
 				arr_str = '['
 				current_index = 2
 				prev_value = '['
+				str_befor_bracket_symbal = ''
 				while current_index < num_as_bit_string.length
+					puts num_as_bit_string[current_index..]
 					current_two_chars = num_as_bit_string[current_index..current_index+1]
 					if current_two_chars == '11'
+						next_two_chars = num_as_bit_string[current_index..current_index+1]
+						if 
 						if prev_value == 'number' || prev_value == ']'
 							current_value = ','
 							arr_str += ','
@@ -129,7 +173,15 @@ module ICFPC
 						current_index += 2
 					elsif current_two_chars == '10' || current_two_chars == '01'
 						elem, rest = dem_number num_as_bit_string[current_index..]
-						arr_str += elem.to_s
+						if mod(elem) != num_as_bit_string[current_index..(num_as_bit_string.length - rest.length - 1)]
+							puts 'mother fuck'
+						end
+						if prev_value == 'number' 
+							
+						else
+							arr_str += elem.to_s
+						end
+						
 						current_value = 'number'
 						current_index += num_as_bit_string[current_index..].length - rest.length
 					else
@@ -157,7 +209,9 @@ module ICFPC
 					end
 
 					prev_value = current_value
+					puts arr_str
 				end
+				# return arr_str
 				return eval(arr_str)
 			end
 
@@ -185,25 +239,6 @@ module ICFPC
 
 			private
 
-			def dem_next(bit_string)
-				case bit_string[0..1]
-				when "00"
-					return [nil, bit_string[2..]]
-				when "01", "10"
-					return dem_number(bit_string)
-				when "11"
-					result = []
-					rest = bit_string
-					loop do
-						rest, elem, finished = dem_list_item(rest)
-						break if finished
-						result << elem
-					end
-					
-					return [result, rest]
-				end
-			end
-
 			def dem_number(bit_string)
 				sign = nil
 				case bit_string[0..1]
@@ -230,6 +265,25 @@ module ICFPC
 				end
 
 				return [sign * num, bit_string[(cur_index + 1 + number_width * 4)..]]
+			end
+
+			def dem_next(bit_string)
+				case bit_string[0..1]
+				when "00"
+					return [nil, bit_string[2..]]
+				when "01", "10"
+					return dem_number(bit_string)
+				when "11"
+					result = []
+					rest = bit_string
+					loop do
+						rest, elem, finished = dem_list_item(rest)
+						break if finished
+						result << elem
+					end
+					
+					return [result, rest]
+				end
 			end
 
 			def dem_list_item(bit_string)
