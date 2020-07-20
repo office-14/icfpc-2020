@@ -56,6 +56,7 @@ def main
     ]
     wall_way = [[-1,1],[-1,-1]] 
     index = 0
+    answer_action = []
     while true do
       # post_paramenters = [4, playerkey.to_i, [[2, ship, ICFPC::Cons.new([rand(0..100),rand(0..100)]), 1]]]
       
@@ -71,12 +72,11 @@ def main
         commands = []
         if role.to_i == 1
           wall_way_move = wall_way[(index%2)]
-          commands.push [0, ship, ICFPC::Cons.new(wall_way_move)]]
+          commands.push [0, ship, ICFPC::Cons.new(wall_way_move)]
         else
-          commands.push [0, ship, ICFPC::Cons.new(move_rand1)]
           begin
-            shoot_x = aaa[3][2][0][0][2][0]
-            shoot_y = aaa[3][2][0][0][2][1]
+            shoot_x = answer_action[3][2][0][0][2][0]
+            shoot_y = answer_action[3][2][0][0][2][1]
             commands.push [2, ship, ICFPC::Cons.new([shoot_x,shoot_y]), 1]
           rescue
           end
@@ -90,7 +90,7 @@ def main
         post_paramenters = [4, playerkey.to_i, commands]
       end
       
-      send serverurl, post_paramenters, playerkey, '/aliens/send'
+      answer_action = send serverurl, post_paramenters, playerkey, '/aliens/send'
       index += 1
     end
 
