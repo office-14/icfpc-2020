@@ -85,7 +85,7 @@ def main
       1
     end
     while (gr.success && gr.game_stage == :started)
-      post_paramenters = [4, playerkey.to_i, [0, ship_id, [move_vectors.sample]]]
+      post_paramenters = [4, playerkey.to_i, [[0, ship_id, move_vectors.sample]]]
       answer = send serverurl, post_paramenters, playerkey
       gr = GameResponse.new(answer)
       sleep 0.5
