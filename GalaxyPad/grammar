@@ -1,0 +1,6 @@
+expression ::=
+    | AP_OPERATOR expression expression
+    | ATOM
+
+ATOM ::= all except space
+AP_OPERATOR ::= "ap"
